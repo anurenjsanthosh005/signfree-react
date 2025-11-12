@@ -9,7 +9,7 @@ function Home() {
   return (
     <main className="flex flex-col min-h-screen w-full overflow-x-hidden">
       <Navbar />
-      <div className="flex flex-col flex-1 px-3 gap-9 overflow-hidden mb-9">
+      <div className="flex flex-col flex-1 px-3 gap-9 overflow-hidden mb-9 items-center">
         <HeroSection />
         <UploadFilesSection />
         <HowToUse />

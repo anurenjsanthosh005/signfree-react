@@ -4,10 +4,11 @@
 @theme {
 
   /* Primary theme colors */
-  --color-bg: #2c3333;
-  --color-nav: #2e4f4f;
+  --color-bg: #DCDCDC;
+  --color-nav:#134686;
   --color-logo: #f28482;
   --color-bg-secondary:#161818;
+  --color-bg-yellow:#FEB21A;
 
   --color-btn: #0e8388;
   --color-btn-hover: #0b6b6f;
@@ -18,14 +19,14 @@
   --color-btn-neg-hover: #8e2f3a;
   --color-txt-neg: #cbe4de;
 
-  --font-main: "Share Tech Mono", monospace;
+  /* --font-main: "Share Tech Mono", monospace; */
 }
 
 @layer base {
   body {
     background-color: var(--color-bg);
     color: var(--color-text);
-    font-family: var(--font-main);
+    /* font-family: var(--font-main); */
   }
 }
 

@@ -1,16 +1,25 @@
 import React from "react";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
-import AdBanners from "./layouts/AdBanners";
-import Preview from "./pages/Preview";
+import Preview from "./components/Preview";
+import MainTasks from "./pages/MainTasks";
+import AdBanners from "./components/Ad/AdBanners";
+import ShowAds from "./pages/ShowAds";
 
 function App() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route element={<AdBanners/>}>
-        <Route path="/preview" element={<Preview/>}/>
-      </Route>
+      <Route path="/main" element={<MainTasks />} />
+      <Route
+        path="/preview"
+        element={
+          <AdBanners>
+            <Preview />
+          </AdBanners>
+        }
+      />
+      <Route path="/ads" element={<ShowAds />} />
     </Routes>
   );
 }

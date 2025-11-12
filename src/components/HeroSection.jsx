@@ -1,20 +1,23 @@
 import React from "react";
+import AdBannerSmall from "./Ad/AdBannerSmall";
 
 function HeroSection() {
   return (
-    <section className="h-[25vh] w-full md:h-[35vh] bg-bg-secondary mt-9 flex flex-col justify-center px-9 text-center md:text-left shadow-xl rounded">
-      <div>
-        <h1 className="text-[clamp(2rem,6vw,5rem)] font-bold text-white">
-          Fast. Safe. Simple.
-        </h1>
+    <div className="w-full max-w-screen-lg mx-auto flex flex-col items-center justify-center text-center px-4 py-5 gap-4 relative">
+      <div className="h-[8vh] sm:h-[11vh] w-full">
+        <AdBannerSmall />
       </div>
-      <h3 className="text-[clamp(1rem,3vw,2rem)] text-btn font-extrabold mt-3">
-        Sign your documents online without the wait. For FREE !
-        <span>
-          <i className="fa-solid fa-hourglass-half text-white animate-spin-stepped ml-5"></i>
-        </span>
-      </h3>
-    </section>
+      <h1 className="text-3xl font-bold">Why SignFreePDF?</h1>
+      <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-7">
+        Add signatures to <span className="font-semibold">PDFs</span> and{" "}
+        <span className="font-semibold">JPEGs</span> in seconds. Supports{" "}
+        <span className="font-semibold">PDFs</span> up to{" "}
+        <span className="font-semibold">20 MB</span> and{" "}
+        <span className="font-semibold">Images</span> up to{" "}
+        <span className="font-semibold">5 MB</span>. Smooth, straightforward,
+        and completely <span className="font-semibold">FREE TO USE</span>.
+      </p>
+    </div>
   );
 }
 

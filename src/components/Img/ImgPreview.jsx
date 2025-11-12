@@ -1,20 +1,23 @@
-import React from "react";
+import React, { forwardRef, useRef } from "react";
+import BurnSign from "../Sign/BurnSign";
 
-function ImgPreview({ doc }) {
-  const isEdit = true;
+function ImgPreview({ doc, isEdit }, ref) {
+  const sign = "Anurenj";
+  const isKey = true;
+
   return (
     <div
-      className={`flex-1  px-3 sm:px-5 lg:px-9 pt-4 pb-5 ${
-        !isEdit && "pb-32"
-      }  flex items-center justify-center`}
+      className={`flex-1 pb-5 ${
+        isKey && "pb-32"
+      } flex flex-col items-center justify-center relative`}
     >
-      <img
-        src={doc}
-        alt="preview"
-        className="max-w-full h-auto max-h-[90vh] object-contain rounded-lg"
-      />
+      {/* ✅ Only capture the image + sign */}
+      <div ref={ref} className="relative inline-block">
+        <img src={doc} alt="preview" />
+        <BurnSign sign={sign} isEdit={isEdit} />
+      </div>
     </div>
   );
 }
 
-export default ImgPreview;
+export default forwardRef(ImgPreview);

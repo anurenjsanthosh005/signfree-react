@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
-function BottomControls() {
+function BottomControls({onClick}) {
   // const [location, setLocation] = useState("/");
   const location = useLocation();
 
-  console.log("location :", location);
+  // console.log("location :", location);
 
   return (
     <div
@@ -39,7 +39,7 @@ function BottomControls() {
             </button>
           </>
         )} */}
-        <button className="bg-btn-neg px-5 py-2 rounded-md hover:bg-btn-neg-hover transition-all duration-300 sm:w-auto">
+        <button onClick={onClick} className="bg-btn-neg px-5 py-2 rounded-md hover:bg-btn-neg-hover transition-all duration-300 sm:w-auto">
           Done
         </button>
       </div>

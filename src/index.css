@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+@import "tailwindcss";
+
+@theme {
+
+  /* Primary theme colors */
+  --color-bg: #2c3333;
+  --color-nav: #2e4f4f;
+  --color-logo: #f28482;
+  --color-bg-secondary:#161818;
+
+  --color-btn: #0e8388;
+  --color-btn-hover: #0b6b6f;
+  --color-txt: #cbe4de;
+
+  /* Secondary theme colors */
+  --color-btn-neg: #b23a48;
+  --color-btn-neg-hover: #8e2f3a;
+  --color-txt-neg: #cbe4de;
+
+  --font-main: "Share Tech Mono", monospace;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-main);
+  }
+}
+
+@layer components {
+  @keyframes spin-stepped {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .animate-spin-stepped {
+    animation: spin-stepped 3s steps(18) infinite;
+  }
+  
+  @keyframes pulse-slow {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.02); opacity: 0.8; }
+  }
+
+  .animate-pulse-slow {
+    animation: pulse-slow 1.5s steps(6) infinite;
+  }
+  
+}
+

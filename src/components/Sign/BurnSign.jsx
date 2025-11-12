@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 
-function BurnSign({ sign,isEdit }) {
+function BurnSign({ sign, isEdit }) {
   const textRef = useRef(null);
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -34,15 +34,25 @@ function BurnSign({ sign,isEdit }) {
         bounds="parent"
       >
         <div
-          ref={textRef}
-          className={`flex items-center justify-center w-full h-full ${isEdit && 'border border-dashed border-gray-400'}   bg-transparent select-none text-black font-signature`}
-          style={{
-            fontSize: `${fontSize}px`,
-            lineHeight: 1,
-            whiteSpace: "nowrap",
-          }}
+          className={`relative flex flex-cols items-center justify-center w-full h-full ${
+            isEdit && "border-2 border-dashed border-gray-400"
+          }   bg-transparent select-none`}
         >
-          {sign}
+            <div className="absolute flex gap-1 text-xl -top-7 -right-2">
+                <button><i className="fa-solid fa-copy"></i></button>
+                <button><i className="fa-solid fa-trash"></i></button>
+            </div>
+          <div
+            ref={textRef}
+            className={`text-black font-signature`}
+            style={{
+              fontSize: `${fontSize}px`,
+              lineHeight: 1,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {sign}
+          </div>
         </div>
       </Rnd>
     </div>

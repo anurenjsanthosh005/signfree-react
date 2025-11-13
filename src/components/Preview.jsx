@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import Img from "../assets/anurenj.jpg";
-import PdfImg from "../assets/Pdf1.jpg";
-import Pdf1 from "../assets/Pdf1.pdf";
-import PdfPreview from "./Pdf/PdfPreview";
+import React, { useEffect } from "react";
 import ImgPreview from "./Img/ImgPreview";
 import BottomControls from "./Controls/BottomControls";
+import { useFiles } from "../context/FIlesContext";
+import { useNavigate } from "react-router-dom";
 
 function Preview() {
+  const { uploadedFile } = useFiles();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (uploadedFile.length === 0) {
+      navigate("/", { replace: true });
+    }
+  }, [uploadedFile, navigate]);
+
   return (
-    <div className=" w-full h-screen flex flex-col">
-      <ImgPreview doc={PdfImg} />
-      {/* Fixed bottom bar */}
+    <div className="py-9 w-full h-screen md:w-[60vw] lg:w-[40vw] flex flex-col">
+      <ImgPreview />
       <BottomControls />
     </div>
   );

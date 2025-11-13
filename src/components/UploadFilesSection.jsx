@@ -1,6 +1,10 @@
 import React from "react";
+import { useFiles } from "../context/FIlesContext";
+import { useNavigate } from "react-router-dom";
 
 function UploadFilesSection() {
+  const navigate = useNavigate();
+  const { setFilePreview, setUploadedFile } = useFiles();
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-bg-yellow rounded-lg flex flex-col items-center text-center space-y-4">
@@ -13,13 +17,14 @@ function UploadFilesSection() {
           type="file"
           accept=".pdf, .jpeg, .jpg, .png"
           className="hidden"
-          // onChange={(e) => {
-          //   const file = e.target.files?.[0];
-          //   if (file) {
-          //     dispatch(setDocs(file));
-          //     dispatch(setPreviewState(true));
-          //   }
-          // }}
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              setUploadedFile(file);
+              navigate("/preview", { replace: true });
+              setFilePreview(true)
+            }
+          }}
         />
       </label>
 

@@ -15,7 +15,7 @@ function ShowAds() {
         {/* <MainAlert/> */}
         {/* <ImageSignAlert/> */}
         {/* <Download/> */}
-        <Complete/>
+        {/* <Complete/> */}
         {/* <CreateSign /> */}
         {/* <CreateImageSign/> */}
         {/* <CreateFontSign/> */}

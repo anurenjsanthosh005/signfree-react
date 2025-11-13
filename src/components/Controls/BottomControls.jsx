@@ -1,13 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useFiles } from "../../context/FIlesContext";
+import { addFile, getAllFiles } from "../../db/fileServices";
+import {handleDownload} from "../";
 
-function BottomControls({ onClick }) {
+function BottomControls() {
   // const [location, setLocation] = useState("/");
   const location = useLocation();
   const navigate = useNavigate();
+  const { uploadedFile } = useFiles();
 
-  // console.log("location :", location);
+  const handleFileUpload = async () => {
+    console.log("clicked preview done button");
+
+    const res = await addFile(uploadedFile);
+    console.log("uploaded res :", res.message);
+
+    // const data = await getAllFiles();
+    // console.log("All files :", data);
+
+    navigate("/main", { replace: true });
+  };
 
   return (
     <div
@@ -19,12 +32,20 @@ function BottomControls({ onClick }) {
 
       <div className="flex flex-wrap justify-center gap-4 text-white font-medium">
         {location.pathname === "/preview" && (
-          <button
-            onClick={() => navigate("/", { replace: true })}
-            className="bg-btn px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 sm:w-auto"
-          >
-            Change
-          </button>
+          <>
+            <button
+              onClick={() => navigate("/", { replace: true })}
+              className="bg-btn px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 sm:w-auto"
+            >
+              Change
+            </button>
+            <button
+              onClick={handleFileUpload}
+              className="bg-btn-neg px-5 py-2 rounded-md hover:bg-btn-neg-hover transition-all duration-300 sm:w-auto"
+            >
+              Done
+            </button>
+          </>
         )}
         {location.pathname === "/main" && (
           <>
@@ -33,6 +54,12 @@ function BottomControls({ onClick }) {
             </button>
             <button className="bg-bg-yellow  px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 sm:w-auto">
               <i className="fa-solid fa-house-chimney"></i>
+            </button>
+            <button
+              onClick={handleDownload}
+              className="bg-btn-neg px-5 py-2 rounded-md hover:bg-btn-neg-hover transition-all duration-300 sm:w-auto"
+            >
+              Download
             </button>
           </>
         )}
@@ -44,12 +71,6 @@ function BottomControls({ onClick }) {
             </button>
           </>
         )} */}
-        <button
-          onClick={onClick}
-          className="bg-btn-neg px-5 py-2 rounded-md hover:bg-btn-neg-hover transition-all duration-300 sm:w-auto"
-        >
-          Done
-        </button>
       </div>
     </div>
   );

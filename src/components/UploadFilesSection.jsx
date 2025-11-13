@@ -1,6 +1,7 @@
 import React from "react";
 import { useFiles } from "../context/FIlesContext";
 import { useNavigate } from "react-router-dom";
+import { addFile, getAllFiles } from "../db/fileServices";
 
 function UploadFilesSection() {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ function UploadFilesSection() {
             if (file) {
               setUploadedFile(file);
               navigate("/preview", { replace: true });
-              setFilePreview(true)
+              setFilePreview(true);
             }
           }}
         />

@@ -1,5 +1,6 @@
 import React, { forwardRef } from "react";
 import { useFiles } from "../../context/FIlesContext";
+import BurnSign from "../Sign/BurnSign";
 
 function ImgPreview({ doc, isEdit }, ref) {
   const { uploadedFile } = useFiles();
@@ -22,7 +23,7 @@ function ImgPreview({ doc, isEdit }, ref) {
     >
       <div ref={ref} className="relative inline-block">
         <img src={imageUrl} alt="preview" />
-        {/* <BurnSign sign={sign} isEdit={isEdit} /> */}
+        <BurnSign sign={sign} isEdit={isEdit} />
       </div>
     </div>
   );

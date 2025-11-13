@@ -8,30 +8,14 @@ function MainTasks() {
   const imageRef = useRef(null);
 
   const [isEdit, setIsEdit] = useState(true);
-
-  const handleDownload = async () => {
-    setIsEdit(false);
-    await new Promise(requestAnimationFrame); //waits for react to rerender
-
-    console.log("button clicked");
-    const canvas = await html2canvas(imageRef.current, { scale: 2 });
-    const imgData = canvas.toDataURL("image/png");
-
-    const link = document.createElement("a");
-    link.href = imgData;
-    link.download = "signed.png";
-    link.click();
-    setIsEdit(true);
-  };
-
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-hidden items-center">
-      <section className="mt-[6vh] bg-red-500 w-[60vw]">
+      <section className="mt-[20vh] bg-red-500 w-full md:w-[70vw]">
         <ImgPreview doc={PdfImg} ref={imageRef} isEdit={isEdit} />
       </section>
-      <BottomControls onClick={handleDownload} />
+      <BottomControls />
     </div>
   );
 }
-
+  
 export default MainTasks;

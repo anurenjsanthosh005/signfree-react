@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import ImgPreview from "./Img/ImgPreview";
-import BottomControls from "./Controls/BottomControls";
+import ImgPreview from "../components/Img/ImgPreview";
+import BottomControls from "../components/Controls/BottomControls";
 import { useFiles } from "../context/FIlesContext";
 import { useNavigate } from "react-router-dom";
 

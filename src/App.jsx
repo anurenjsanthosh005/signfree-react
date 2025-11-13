@@ -1,7 +1,7 @@
 import React from "react";
 import Home from "./pages/Home";
 import { Route, Routes } from "react-router-dom";
-import Preview from "./components/Preview";
+import Preview from "./pages/Preview";
 import MainTasks from "./pages/MainTasks";
 import AdBanners from "./components/Ad/AdBanners";
 import ShowAds from "./pages/ShowAds";

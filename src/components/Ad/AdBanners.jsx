@@ -4,7 +4,7 @@ import AdBannerSmall from "./AdBannerSmall";
 
 function AdBanners({children}) {
   return (
-    <section className="h-screen w-full overflow-hidden flex flex-col backdrop-blur-lg bg-black/70">
+    <section className="h-screen w-full overflow-hidden flex flex-col backdrop-blur-lg bg-black/80">
       {/* Top Banner */}
       <div className="h-[8vh] sm:h-[11vh] shrink-0">
         <AdBannerSmall />

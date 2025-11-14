@@ -5,7 +5,7 @@ import { addFile, getAllFiles } from "../db/fileServices";
 
 function UploadFilesSection() {
   const navigate = useNavigate();
-  const { setFilePreview, setUploadedFile } = useFiles();
+  const { setFilePreview, setUploadedPreviewFile } = useFiles();
 
   return (
     <div className="w-full max-w-md mx-auto p-6 bg-bg-yellow rounded-lg flex flex-col items-center text-center space-y-4">
@@ -21,7 +21,7 @@ function UploadFilesSection() {
           onChange={(e) => {
             const file = e.target.files?.[0];
             if (file) {
-              setUploadedFile(file);
+              setUploadedPreviewFile(file);
               navigate("/preview", { replace: true });
               setFilePreview(true);
             }

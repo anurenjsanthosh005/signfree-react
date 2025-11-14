@@ -7,12 +7,19 @@ import CreateImageSign from "../components/Sign/Image/CreateImageSign";
 import ImageSignAlert from "../components/Alerts/ImageSignAlert";
 import Download from "../components/Download/Download";
 import Complete from "../components/Download/Complete";
+import { useFiles } from "../context/FIlesContext";
+import { useLocation } from "react-router-dom";
 
 function ShowAds() {
+  // const { homeClick, setHomeClick } = useFiles();
+
+  const location = useLocation();
+  const showAlert = location.state?.showHomeAlert;
+
   return (
     <AdBanners>
       <div className="flex flex-col items-center justify-center">
-        {/* <MainAlert/> */}
+        {showAlert && <MainAlert />}
         {/* <ImageSignAlert/> */}
         {/* <Download/> */}
         {/* <Complete/> */}

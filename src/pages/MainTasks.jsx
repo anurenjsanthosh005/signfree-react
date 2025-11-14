@@ -10,6 +10,7 @@ function MainTasks() {
   const imageRef = useRef(null);
   const [imgUrl, setImgUrl] = useState(null);
   const navigate = useNavigate();
+  const [isDownloading,setIsDownloading] = useState(true)
 
   const { uploadedFile, setUploadedFile } = useFiles();
   const [loading, setLoading] = useState(true);
@@ -47,10 +48,10 @@ function MainTasks() {
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-hidden items-center">
       <section className="mt-[20vh] w-full md:w-[70vw]">
-        <ImgPreview ref={imageRef} imgUrl={imgUrl} />
+        <ImgPreview ref={imageRef} imgUrl={imgUrl} isDownloading={isDownloading} />
       </section>
 
-      <BottomControls imgRef={imageRef} />
+      <BottomControls imgRef={imageRef} setIsDownloading={setIsDownloading} />
     </div>
   );
 }

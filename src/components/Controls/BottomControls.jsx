@@ -4,10 +4,10 @@ import { useFiles } from "../../context/FIlesContext";
 import { addFile } from "../../db/fileServices";
 import html2canvas from "html2canvas-pro";
 
-function BottomControls({ imgRef }) {
+function BottomControls({ imgRef, setIsDownloading }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { uploadedPreviewFile, setHomeClick, setFilePreview, setUploadedFile } =
+  const { uploadedPreviewFile, setFilePreview, setUploadedFile } =
     useFiles();
 
   const baseBtn =
@@ -31,7 +31,7 @@ function BottomControls({ imgRef }) {
         const res = await addFile(file, {
           width,
           height,
-          pageCount: 1, 
+          pageCount: 1,
         });
         console.log("uploaded res:", res.file);
 
@@ -46,12 +46,18 @@ function BottomControls({ imgRef }) {
     console.log("clicked download!");
     if (!imgRef?.current) return;
 
+    setIsDownloading(false);
+
+    await new Promise(requestAnimationFrame);
+
     const canvas = await html2canvas(imgRef.current, { scale: 2 });
     const imgData = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.href = imgData;
     link.download = "signed.png";
     link.click();
+    setIsDownloading(true);
+
     console.log("download completed");
   };
 

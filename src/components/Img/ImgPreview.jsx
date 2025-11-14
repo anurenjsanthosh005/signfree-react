@@ -2,7 +2,7 @@ import React, { forwardRef } from "react";
 import { useFiles } from "../../context/FIlesContext";
 import BurnSign from "../Sign/BurnSign";
 
-const ImgPreview = forwardRef(({ imgUrl }, ref) => {
+const ImgPreview = forwardRef(({ imgUrl,isDownloading }, ref) => {
   const { filePreview } = useFiles();  
 
   return (
@@ -13,7 +13,7 @@ const ImgPreview = forwardRef(({ imgUrl }, ref) => {
     >
       <div ref={ref} className="relative inline-block">
         <img src={imgUrl} alt="preview" />
-        <BurnSign />
+        <BurnSign isDownloading={isDownloading} />
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import {
   updateSignature,
 } from "../../db/signServices";
 
-function BurnSign() {
+function BurnSign({isDownloading}) {
   const { sign, setSign } = useFiles();
 
   useEffect(() => {
@@ -22,13 +22,13 @@ function BurnSign() {
   return (
     <div className="absolute top-0 left-0 w-full h-full">
       {sign.map((s) => (
-        <SignItem key={s.id} sign={s} setSign={setSign} />
+        <SignItem key={s.id} sign={s} setSign={setSign} isDownloading={isDownloading} />
       ))}
     </div>
   );
 }
 
-function SignItem({ sign, setSign }) {
+function SignItem({ sign, setSign,isDownloading }) {
   const textRef = useRef(null);
   const { uploadedFile } = useFiles();
 
@@ -105,10 +105,10 @@ function SignItem({ sign, setSign }) {
     >
       <div
         className={`relative flex flex-cols items-center justify-center w-full h-full ${
-          isEdit && "border-2 border-dashed border-white"
+          isDownloading && "border-2 border-dashed border-white"
         } bg-transparent select-none`}
       >
-        {isEdit && (
+        {isDownloading && (
           <div className="absolute flex gap-1 text-xl -top-7 -right-2">
             <button>
               <i className="fa-solid fa-copy text-white"></i>

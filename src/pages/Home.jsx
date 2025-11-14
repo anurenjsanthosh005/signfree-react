@@ -1,11 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Navbar from "../components/Nav/Navbar";
 import Footer from "../components/Footer/Footer";
 import HeroSection from "../components/HeroSection";
 import UploadFilesSection from "../components/UploadFilesSection";
 import HowToUse from "../components/HowToUse";
+import { crearFilesDb } from "../db/fileServices";
+
 
 function Home() {
+  useEffect(() => {
+    const clearData = async () => {
+      await crearFilesDb();
+      console.log("datas cleared");
+    };
+
+    clearData();
+  }, []);
+
   return (
     <main className="flex flex-col min-h-screen w-full overflow-x-hidden">
       <Navbar />

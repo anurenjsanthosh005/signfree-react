@@ -6,6 +6,7 @@ import { getAllFiles } from "../db/fileServices";
 import { useNavigate } from "react-router-dom";
 
 function MainTasks() {
+  
   const imageRef = useRef(null);
   const [imgUrl, setImgUrl] = useState(null);
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ function MainTasks() {
   }, [setUploadedFile]);
 
   useEffect(() => {
-    if (loading) return; // ⛔ stop if still loading
+    if (loading) return;
 
     if (!uploadedFile || !uploadedFile.data) {
       navigate("/");

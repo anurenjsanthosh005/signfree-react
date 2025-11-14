@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useFiles } from "../../../context/FIlesContext";
+import { data, useNavigate } from "react-router-dom";
+import { addSignature, getAllSignatures } from "../../../db/signServices";
 
-function CreateFontSign() {
+function CreateFontSign({ onClick }) {
+  const { setSign } = useFiles();
   const [font, setFont] = useState("font-sans");
   const [text, setText] = useState("");
+  const navigate = useNavigate();
 
   const fonts = [
     { name: "Sans", class: "font-sans" },
@@ -11,10 +16,37 @@ function CreateFontSign() {
     { name: "Cursive", class: "italic" },
   ];
 
+  const setupSignData = async () => {
+    console.log("sign save clicked");
+
+    const basicSignData = {
+      type: "text",
+      data: text,
+      font: font,
+    };
+    // Save to DB
+    await addSignature(basicSignData);
+
+    // Read back the latest/signature
+    const savedSigns = await getAllSignatures();
+
+    console.log("Saved Sign:", savedSigns);
+
+    setSign(savedSigns);
+    onClick
+    navigate('/main')
+  };
+
+  // useEffect(() => {
+  //   const signData = { sign: text, font: font };
+  //   setSign(signData);
+  // }, [text, font]);
+
   return (
-    <div className="relative w-[90vw] sm:w-[60vw] md:w-[40vw] bg-nav text-txt px-6 py-5 rounded-2xl flex flex-col justify-between items-center text-center mx-auto my-auto shadow-lg gap-5">
+    <div className="absolute w-[90vw] sm:w-[60vw] md:w-[40vw] bg-nav text-txt px-6 py-5 rounded-2xl flex flex-col justify-between items-center text-center mx-auto my-auto shadow-lg gap-5">
       {/* Close Button */}
       <button
+        onClick={onClick}
         className="absolute -top-3 -right-3 text-xl font-bold bg-red-500 text-white 
         px-3 py-1 rounded-full shadow-md hover:scale-110 
         transition-transform duration-300 z-10"
@@ -29,7 +61,7 @@ function CreateFontSign() {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Type your signature..."
-          className={`w-full text-2xl ${font} bg-bg text-black/70 rounded-xl text-center outline-none focus:border-white/70 transition-all duration-300`}
+          className={`w-full text-2xl ${font} bg-bg text-black/90 font-semibold rounded-xl text-center outline-none focus:border-white/70 transition-all duration-300`}
         />
 
         {/* Font collection */}
@@ -48,7 +80,10 @@ function CreateFontSign() {
 
       {/* Action buttons */}
       <div className="flex gap-4 font-bold w-full justify-end">
-        <button className="bg-btn text-txt px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 text-lg sm:text-base">
+        <button
+          onClick={() => setupSignData()}
+          className="bg-btn text-txt px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 text-lg sm:text-base"
+        >
           Save
         </button>
       </div>

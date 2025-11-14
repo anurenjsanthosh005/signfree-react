@@ -6,7 +6,7 @@ import BottomControls from "../../Controls/BottomControls";
 
 function CreateImageSign() {
   return (
-    <div className="relative flex justify-center items-center w-full bg-white px-5 border-2 rounded">
+    <div className="absolute flex justify-center items-center w-full bg-white px-5 border-2 rounded">
       <button
         className="absolute -top-3 -right-3 text-xl font-bold bg-red-500 text-white 
         px-3 py-1 rounded-full shadow-md hover:scale-110 

@@ -25,15 +25,15 @@ function BottomControls({ imgRef }) {
 
   const handleDownload = async () => {
     console.log("clicked download!");
-    // if (!imgRef?.current) return;
+    if (!imgRef?.current) return;
 
-    // const canvas = await html2canvas(imgRef.current, { scale: 2 });
-    // const imgData = canvas.toDataURL("image/png");
-    // const link = document.createElement("a");
-    // link.href = imgData;
-    // link.download = "signed.png";
-    // link.click();
-    // console.log("download completed");
+    const canvas = await html2canvas(imgRef.current, { scale: 2 });
+    const imgData = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = imgData;
+    link.download = "signed.png";
+    link.click();
+    console.log("download completed");
   };
 
   const renderButtons = () => {
@@ -60,7 +60,12 @@ function BottomControls({ imgRef }) {
     if (pathname === "/main")
       return (
         <>
-          <button className={`bg-btn hover:bg-btn-hover ${baseBtn}`}>
+          <button
+            onClick={() => {
+              navigate("/ads", { state: { createSign  : true } });
+            }}
+            className={`bg-btn hover:bg-btn-hover ${baseBtn}`}
+          >
             <i className="fa-solid fa-pen-nib"></i>
           </button>
           <button

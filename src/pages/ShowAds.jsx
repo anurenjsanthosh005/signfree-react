@@ -15,6 +15,7 @@ function ShowAds() {
 
   const location = useLocation();
   const showAlert = location.state?.showHomeAlert;
+  const showCreateSign = location.state?.createSign;
 
   return (
     <AdBanners>
@@ -23,7 +24,7 @@ function ShowAds() {
         {/* <ImageSignAlert/> */}
         {/* <Download/> */}
         {/* <Complete/> */}
-        {/* <CreateSign /> */}
+        {showCreateSign && <CreateSign />}
         {/* <CreateImageSign/> */}
         {/* <CreateFontSign/> */}
       </div>

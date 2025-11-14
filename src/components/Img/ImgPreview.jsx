@@ -3,7 +3,7 @@ import { useFiles } from "../../context/FIlesContext";
 import BurnSign from "../Sign/BurnSign";
 
 const ImgPreview = forwardRef(({ imgUrl }, ref) => {
-  const { filePreview } = useFiles();
+  const { filePreview } = useFiles();  
 
   return (
     <div
@@ -13,7 +13,7 @@ const ImgPreview = forwardRef(({ imgUrl }, ref) => {
     >
       <div ref={ref} className="relative inline-block">
         <img src={imgUrl} alt="preview" />
-        {/* <BurnSign sign={sign} isEdit={isEdit} /> */}
+        <BurnSign />
       </div>
     </div>
   );

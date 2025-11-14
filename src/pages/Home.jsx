@@ -4,13 +4,14 @@ import Footer from "../components/Footer/Footer";
 import HeroSection from "../components/HeroSection";
 import UploadFilesSection from "../components/UploadFilesSection";
 import HowToUse from "../components/HowToUse";
-import { crearFilesDb } from "../db/fileServices";
-
+import { clearFilesDb } from "../db/fileServices";
+import { clearSignatureDb } from "../db/signServices";
 
 function Home() {
   useEffect(() => {
     const clearData = async () => {
-      await crearFilesDb();
+      await clearFilesDb();
+      await clearSignatureDb();
       console.log("datas cleared");
     };
 

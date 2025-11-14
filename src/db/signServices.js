@@ -50,6 +50,16 @@ export async function getAllSignatures() {
   return await db.signatures.toArray();
 }
 
+export async function updateSignature(id, updates) {
+  try {
+    await db.signatures.update(id, updates);
+    return { success: true };
+  } catch (error) {
+    console.error("Update signature error:", error);
+    return { success: false, message: "Failed to update signature" };
+  }
+}
+
 export async function deleteSignature(id) {
   try {
     await db.signatures.delete(id);

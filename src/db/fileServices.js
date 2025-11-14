@@ -64,7 +64,7 @@ export async function deleteFile(fileId) {
   }
 }
 
-export async function crearFilesDb() {
+export async function clearFilesDb() {
   try {
     await db.files.clear();
     return { success: true, message: "Files DB cleared" };

@@ -1,11 +1,14 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import { useFiles } from "../../context/FIlesContext";
-import { deleteSignature, getAllSignatures } from "../../db/signServices";
+import {
+  deleteSignature,
+  getAllSignatures,
+  updateSignature,
+} from "../../db/signServices";
 
 function BurnSign() {
   const { sign, setSign } = useFiles();
-  console.log("sign data :", sign);
 
   useEffect(() => {
     const getSignDatas = async () => {
@@ -27,44 +30,57 @@ function BurnSign() {
 
 function SignItem({ sign, setSign }) {
   const textRef = useRef(null);
-
-  const {uploadedFile } = useFiles();
-
+  const { uploadedFile } = useFiles();
 
   const isEdit = true;
 
-  const [position, setPosition] = useState({ x: 100, y: 100 });
-  const [size, setSize] = useState({ width: 0, height: 0 });
-  const [fontSize, setFontSize] = useState(sign.fontSize);
+  // ✅ Load saved position & size on mount
+  const [position, setPosition] = useState({
+    x: sign.xPercent ?? 100,
+    y: sign.yPercent ?? 100,
+  });
 
-  // Measure text size
+  const [size, setSize] = useState({
+    width: sign.widthPercent ?? 120,
+    height: sign.heightPercent ?? 40,
+  });
+
+  const [fontSize, setFontSize] = useState(sign.fontSize ?? 20);
+
+  // Measure text only when no saved size exists
   useEffect(() => {
+    if (sign.widthPercent && sign.heightPercent) return;
+
     if (textRef.current) {
       const w = textRef.current.offsetWidth;
       const h = textRef.current.offsetHeight;
       setSize({ width: w + 20, height: h + 10 });
     }
-  }, [sign.text, sign.font]);
+  }, [sign.data, sign.font]);
 
+  // Save updated position/size/fontSize to DB
   useEffect(() => {
-    console.log("moved or rezised the sign :",sign.id);
+    if (!uploadedFile) return;
 
-    const signMetaData = {
-      'xPercent':position.x,
-      'yPercent':position.y,
-      'widthPercent':size.width,
-      'heightPercent':size.height,
-      'fonrotationtSize':fontSize,
-    }
+    const updateSign = async () => {
+      await updateSignature(sign.id, {
+        xPercent: position.x,
+        yPercent: position.y,
+        widthPercent: size.width,
+        heightPercent: size.height,
+        fontSize,
+        fileId: uploadedFile.id,
+        pageWidth: uploadedFile.width,
+        pageHeight: uploadedFile.height,
+      });
+    };
 
-    console.log("uploaded file data :",uploadedFile);
-    
-
-  }, [position,size,fontSize,setPosition, setFontSize, setSize]);
+    updateSign();
+  }, [position, size, fontSize]);
 
   const handleSignDelete = useCallback(
     async (id) => {
-      const data = await deleteSignature(id);
+      await deleteSignature(id);
       const updated = await getAllSignatures();
       setSign(updated);
     },
@@ -78,7 +94,7 @@ function SignItem({ sign, setSign }) {
       onDragStop={(e, d) => setPosition({ x: d.x, y: d.y })}
       onResizeStop={(e, direction, ref, delta, pos) => {
         const newHeight = ref.offsetHeight;
-        setFontSize(newHeight * 1);
+        setFontSize(newHeight); // scale font with height
         setSize({
           width: ref.offsetWidth,
           height: ref.offsetHeight,
@@ -92,14 +108,16 @@ function SignItem({ sign, setSign }) {
           isEdit && "border-2 border-dashed border-white"
         } bg-transparent select-none`}
       >
-        <div className="absolute flex gap-1 text-xl -top-7 -right-2">
-          <button>
-            <i className="fa-solid fa-copy text-white"></i>
-          </button>
-          <button onClick={() => handleSignDelete(sign.id)}>
-            <i className="fa-solid fa-trash text-white"></i>
-          </button>
-        </div>
+        {isEdit && (
+          <div className="absolute flex gap-1 text-xl -top-7 -right-2">
+            <button>
+              <i className="fa-solid fa-copy text-white"></i>
+            </button>
+            <button onClick={() => handleSignDelete(sign.id)}>
+              <i className="fa-solid fa-trash text-white"></i>
+            </button>
+          </div>
+        )}
 
         <div
           ref={textRef}

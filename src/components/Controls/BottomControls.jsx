@@ -15,12 +15,31 @@ function BottomControls({ imgRef }) {
 
   const handleFileUpload = async () => {
     // console.log("clicked preview done button");
-    const res = await addFile(uploadedPreviewFile);
-    // console.log("uploaded res:", res.file);
 
-    setUploadedFile(res.file);
-    navigate("/main", { replace: true });
-    setFilePreview(false);
+    if (!uploadedPreviewFile) return;
+
+    const file = uploadedPreviewFile; // Assuming this is a File object
+
+    if (file.type.startsWith("image/")) {
+      const img = new Image();
+      img.src = URL.createObjectURL(file);
+
+      img.onload = async () => {
+        const width = img.width;
+        const height = img.height;
+        console.log("Width:", img.width, "Height:", img.height);
+        const res = await addFile(file, {
+          width,
+          height,
+          pageCount: 1, 
+        });
+        console.log("uploaded res:", res.file);
+
+        setUploadedFile(res.file);
+        navigate("/main", { replace: true });
+        setFilePreview(false);
+      };
+    }
   };
 
   const handleDownload = async () => {
@@ -62,7 +81,7 @@ function BottomControls({ imgRef }) {
         <>
           <button
             onClick={() => {
-              navigate("/ads", { state: { createSign  : true } });
+              navigate("/ads", { state: { createSign: true } });
             }}
             className={`bg-btn hover:bg-btn-hover ${baseBtn}`}
           >

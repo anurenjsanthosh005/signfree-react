@@ -36,6 +36,8 @@ function BurnSign({ isDownloading }) {
 }
 
 function SignItem({ sign, setSign, isDownloading }) {
+  console.log("sign data :", sign);
+
   const textRef = useRef(null);
   const { uploadedFile } = useFiles();
 
@@ -53,6 +55,7 @@ function SignItem({ sign, setSign, isDownloading }) {
   });
 
   const [fontSize, setFontSize] = useState(sign.fontSize ?? 20);
+  const [imgUrl, setImgUrl] = useState(null);
 
   // Measure text only when no saved size exists
   useEffect(() => {
@@ -64,6 +67,14 @@ function SignItem({ sign, setSign, isDownloading }) {
       setSize({ width: w + 20, height: h + 10 });
     }
   }, [sign.data, sign.font]);
+
+  useEffect(() => {
+    if (sign.type === "image" && sign.data instanceof Blob) {
+      const url = URL.createObjectURL(sign.data);
+      setImgUrl(url);
+      return () => URL.revokeObjectURL(url);
+    }
+  }, [sign]);
 
   // Save updated position/size/fontSize to DB
   useEffect(() => {
@@ -105,27 +116,6 @@ function SignItem({ sign, setSign, isDownloading }) {
     },
     [setSign]
   );
-
-  // const setupSignData = async () => {
-  //   console.log("sign save clicked");
-
-  //   const basicSignData = {
-  //     type: "text",
-  //     data: text,
-  //     font: font,
-  //   };
-  //   // Save to DB
-  //   await addSignature(basicSignData);
-
-  //   // Read back the latest/signature
-  //   const savedSigns = await getAllSignatures();
-
-  //   console.log("Saved Sign:", savedSigns);
-
-  //   setSign(savedSigns);
-  //   onClick
-  //   navigate('/main')
-  // };
 
   const handleDuplicate = async (id) => {
     try {
@@ -204,19 +194,29 @@ function SignItem({ sign, setSign, isDownloading }) {
           </div>
         )}
 
-        <div
-          ref={textRef}
-          className={`text-black ${
-            sign.font === "italic" ? "italic" : sign.font
-          }`}
-          style={{
-            fontSize: `${fontSize}px`,
-            lineHeight: 1,
-            whiteSpace: "nowrap",
-          }}
-        >
-          {sign.data}
-        </div>
+        {sign.type === "text" && (
+          <div
+            ref={textRef}
+            className={`text-black ${
+              sign.font === "italic" ? "italic" : sign.font
+            }`}
+            style={{
+              fontSize: `${fontSize}px`,
+              lineHeight: 1,
+              whiteSpace: "nowrap",
+            }}
+          >
+            {sign.data}
+          </div>
+        )}
+
+        {sign.type === "image" && imgUrl && (
+          <img
+            src={imgUrl}
+            alt="signature"
+            className="w-full h-full object-contain pointer-events-none"
+          />
+        )}
       </div>
     </Rnd>
   );

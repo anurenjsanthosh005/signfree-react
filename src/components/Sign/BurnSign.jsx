@@ -2,12 +2,14 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Rnd } from "react-rnd";
 import { useFiles } from "../../context/FIlesContext";
 import {
+  addSignature,
   deleteSignature,
   getAllSignatures,
+  getSignatureWithId,
   updateSignature,
 } from "../../db/signServices";
 
-function BurnSign({isDownloading}) {
+function BurnSign({ isDownloading }) {
   const { sign, setSign } = useFiles();
 
   useEffect(() => {
@@ -22,13 +24,18 @@ function BurnSign({isDownloading}) {
   return (
     <div className="absolute top-0 left-0 w-full h-full">
       {sign.map((s) => (
-        <SignItem key={s.id} sign={s} setSign={setSign} isDownloading={isDownloading} />
+        <SignItem
+          key={s.id}
+          sign={s}
+          setSign={setSign}
+          isDownloading={isDownloading}
+        />
       ))}
     </div>
   );
 }
 
-function SignItem({ sign, setSign,isDownloading }) {
+function SignItem({ sign, setSign, isDownloading }) {
   const textRef = useRef(null);
   const { uploadedFile } = useFiles();
 
@@ -78,14 +85,92 @@ function SignItem({ sign, setSign,isDownloading }) {
     updateSign();
   }, [position, size, fontSize]);
 
-  const handleSignDelete = useCallback(
-    async (id) => {
-      await deleteSignature(id);
+  const updatePage = async () => {
+    try {
       const updated = await getAllSignatures();
       setSign(updated);
+    } catch (error) {
+      console.error("Failed to refresh signatures:", error);
+    }
+  };
+
+  const handleSignDelete = useCallback(
+    async (id) => {
+      try {
+        await deleteSignature(id);
+        await updatePage();
+      } catch (error) {
+        console.error("Failed to delete signature:", error);
+      }
     },
     [setSign]
   );
+
+  // const setupSignData = async () => {
+  //   console.log("sign save clicked");
+
+  //   const basicSignData = {
+  //     type: "text",
+  //     data: text,
+  //     font: font,
+  //   };
+  //   // Save to DB
+  //   await addSignature(basicSignData);
+
+  //   // Read back the latest/signature
+  //   const savedSigns = await getAllSignatures();
+
+  //   console.log("Saved Sign:", savedSigns);
+
+  //   setSign(savedSigns);
+  //   onClick
+  //   navigate('/main')
+  // };
+
+  const handleDuplicate = async (id) => {
+    try {
+      const { success, sign } = await getSignatureWithId(id);
+
+      if (!success || !sign) {
+        console.error("Duplicate failed: original sign not found");
+        return;
+      }
+
+      const duplicated = {
+        fileId: sign.fileId,
+        type: sign.type,
+        data: sign.data, // keep same sign content
+        font: sign.font,
+
+        pageNumber: sign.pageNumber,
+        pageWidth: sign.pageWidth,
+        pageHeight: sign.pageHeight,
+
+        xPercent: (sign.xPercent ?? 0) + 20, // shift so the clone isn't overlapped
+        yPercent: (sign.yPercent ?? 0) + 20,
+
+        widthPercent: sign.widthPercent,
+        heightPercent: sign.heightPercent,
+
+        fontSize: sign.fontSize,
+        rotation: sign.rotation,
+        scale: sign.scale,
+      };
+
+      const res = await addSignature(duplicated);
+
+      if (!res.success) {
+        console.error("Duplicate failed while saving:", res.message);
+        return;
+      }
+
+      await updatePage();
+
+      console.log("Duplicated sign:", res.sign);
+    } catch (error) {
+      console.error("Error while duplicating signature:", error);
+    }
+  };
 
   return (
     <Rnd
@@ -105,16 +190,16 @@ function SignItem({ sign, setSign,isDownloading }) {
     >
       <div
         className={`relative flex flex-cols items-center justify-center w-full h-full ${
-          isDownloading && "border-2 border-dashed border-white"
+          isDownloading && "border-2 border-dashed border-bg-yellow"
         } bg-transparent select-none`}
       >
         {isDownloading && (
           <div className="absolute flex gap-1 text-xl -top-7 -right-2">
-            <button>
-              <i className="fa-solid fa-copy text-white"></i>
+            <button onClick={() => handleDuplicate(sign.id)}>
+              <i className="fa-solid fa-copy text-bg-yellow"></i>
             </button>
             <button onClick={() => handleSignDelete(sign.id)}>
-              <i className="fa-solid fa-trash text-white"></i>
+              <i className="fa-solid fa-trash text-bg-yellow"></i>
             </button>
           </div>
         )}

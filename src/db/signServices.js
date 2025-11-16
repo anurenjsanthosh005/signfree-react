@@ -60,6 +60,17 @@ export async function updateSignature(id, updates) {
   }
 }
 
+
+export async function getSignatureWithId(id) {
+  try {
+    const sign = await db.signatures.get(id);
+    return { success: true, sign };
+  } catch (error) {
+    console.error("Get signature error:", error);
+    return { success: false, message: "Failed to get signature" };
+  }
+}
+
 export async function deleteSignature(id) {
   try {
     await db.signatures.delete(id);

@@ -35,6 +35,10 @@ function CreateSign() {
         </button>
       </div> */}
 
+      <div>
+        <h1 className="font-bold ">Select sign type</h1>
+      </div>
+
         {/* Action buttons */}
         <div className="flex gap-4 font-bold">
           <button

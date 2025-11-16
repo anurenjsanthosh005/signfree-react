@@ -8,8 +8,11 @@ import { useNavigate } from "react-router-dom";
 import TransparentBg from "../../../assets/transparentbg.jpg";
 import { addSignature, getAllSignatures } from "../../../db/signServices";
 
-function CreateImageSign({ onClick, imgUrl }) {
+function CreateImageSign({ onClick, imgUrl, keySign }) {
   const { uploadedPreviewSign, setUploadedImageSign, setSign } = useFiles();
+
+  console.log("key is :",keySign);
+  
 
   const navigate = useNavigate();
   // const [imgUrl, setImgUrl] = useState(null);
@@ -25,7 +28,7 @@ function CreateImageSign({ onClick, imgUrl }) {
   };
 
   const setupSignData = async () => {
-    console.log("image sign save clicked");
+    console.log("image sign save clicked ");
 
     // MUST be File → NOT blob URL
     const file = uploadedPreviewSign;
@@ -63,12 +66,14 @@ function CreateImageSign({ onClick, imgUrl }) {
       >
         X
       </button>
-      <div className="relative bg-amber-200 w-full flex justify-center border-2 border-black rounded py-5 ">
-        <img
-          src={TransparentBg}
-          alt="background"
-          className="absolute inset-0 w-full h-full object-cover"
-        />
+      <div className="relative w-full flex justify-center border-2 border-black rounded ">
+        {keySign === "sign" && (
+          <img
+            src={TransparentBg}
+            alt="background"
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
 
         <img
           src={imgUrl}

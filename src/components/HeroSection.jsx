@@ -4,9 +4,6 @@ import AdBannerSmall from "./Ad/AdBannerSmall";
 function HeroSection() {
   return (
     <div className="w-full max-w-screen-lg mx-auto flex flex-col items-center justify-center text-center px-4 py-5 gap-4 relative">
-      <div className="h-[8vh] sm:h-[11vh] w-full">
-        <AdBannerSmall />
-      </div>
       <h1 className="text-3xl font-bold">Why SignFreePDF?</h1>
       <p className="text-base sm:text-lg md:text-xl leading-relaxed mb-7">
         Add signatures to <span className="font-semibold">PDFs</span> and{" "}

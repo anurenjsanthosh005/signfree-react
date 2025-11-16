@@ -7,8 +7,14 @@ import html2canvas from "html2canvas-pro";
 function BottomControls({ imgRef, setIsDownloading }) {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { uploadedPreviewFile, setFilePreview, setUploadedFile } =
-    useFiles();
+  const {
+    uploadedFile,
+    uploadedPreviewFile,
+    setFilePreview,
+    setUploadedFile,
+  } = useFiles();
+
+  console.log("uploadedFile :", uploadedFile);
 
   const baseBtn =
     "px-5 py-2 rounded-md transition-all duration-300 sm:w-auto font-medium";
@@ -115,7 +121,12 @@ function BottomControls({ imgRef, setIsDownloading }) {
     <div
       className={`fixed bottom-0 left-0 w-full bg-black/70 backdrop-blur-md py-2 px-5 flex flex-col items-center gap-3 border-t border-white/10 }`}
     >
-      <h1 className="text-txt text-center text-lg font-medium">file name</h1>
+      <h1 className="text-txt text-center text-lg font-medium">
+        {uploadedFile?.name}
+      </h1>
+      {/* <h1 className="text-txt text-center text-lg font-medium">
+        {uploadedPreviewFile?.name}
+      </h1> */}
       <div className="flex flex-wrap justify-center gap-4 text-white">
         {renderButtons()}
       </div>

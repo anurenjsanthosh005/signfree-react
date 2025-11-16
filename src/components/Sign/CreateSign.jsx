@@ -10,6 +10,7 @@ function CreateSign() {
   const [fontSignModal, setFontSignModal] = useState(false);
   const [imageSignModal, setImageSignModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [keySign, setKeySign] = useState(null);
 
   const [signUrl, setSignUrl] = useState(null);
   const { setUploadedPreviewSign } = useFiles();
@@ -22,12 +23,18 @@ function CreateSign() {
 
   const handleFileChange = async (e) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file && !keySign) return;
+
     console.log("Selected file:", file);
     setLoading(true); // ⬅️ START LOADING
     try {
       // Remove background using IMG.LY browser version
-      const processedFile = await removeWhiteBackground(file);
+      let processedFile;
+      if (keySign === "sign") {
+        processedFile = await removeWhiteBackground(file);
+      } else if (keySign === "image") {
+        processedFile = file;
+      }
       console.log("Processed file:", processedFile);
       setUploadedPreviewSign(processedFile);
       const url = URL.createObjectURL(processedFile);
@@ -42,12 +49,16 @@ function CreateSign() {
 
   return (
     <>
-      <div className={`relative ${loading && 'hidden'} w-[50vw] md:w-[25vw] bg-nav text-txt px-6 py-3 rounded-2xl flex flex-col justify-center items-center text-center mx-auto my-auto shadow-lg gap-5`}>
+      <div
+        className={`relative ${
+          loading && "hidden"
+        }  md:w-[35vw] bg-nav text-txt px-6 py-3 rounded-2xl flex flex-col justify-center items-center text-center mx-auto my-auto shadow-lg gap-5`}
+      >
         {/* Close Button - top right corner */}
         <button
           onClick={() => navigate(-1, { replace: true })}
           className={`absolute ${
-            fontSignModal || (imageSignModal && "hidden")
+           ( fontSignModal || imageSignModal) && "hidden"
           } -top-3 -right-3 text-xl font-bold bg-red-500 text-white 
         px-3 py-1 rounded-full shadow-md hover:scale-110 
         transition-transform duration-300 z-10`}
@@ -67,8 +78,30 @@ function CreateSign() {
             </button>
             </div> */}
 
-        <div>
-          <h1 className="font-bold ">Select sign type</h1>
+        <div className="flex flex-col justify-start items-start gap-5">
+          <h1 className="font-bold text-xl text-bg-yellow">
+            Select overlay type
+          </h1>
+          <ul className="flex flex-col  justify-start items-start gap-2">
+            <li>
+              <span className="font-bold text-white">Aa -</span>
+              <span className="pl-2">for adding text.</span>
+            </li>
+            <div className="flex items-center">
+              <span className="font-bold text-white">
+                <i className="fa-solid fa-images"></i> -
+              </span>
+
+              <span className="pl-2">for adding images.</span>
+            </div>
+            <div className="flex items-center">
+              <span className="font-bold text-white">
+                <i className="fa-solid fa-signature"></i> -
+              </span>
+
+              <span className="pl-2">for adding Signature.</span>
+            </div>{" "}
+          </ul>
         </div>
 
         {/* Action buttons */}
@@ -81,10 +114,21 @@ function CreateSign() {
           </button>
 
           <button
-            onClick={handleImageClick}
+            onClick={() => {
+              handleImageClick(), setKeySign("image");
+            }}
             className="bg-btn text-txt px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 text-xl sm:text-base"
           >
             <i className="fa-solid fa-images"></i>
+          </button>
+
+          <button
+            onClick={() => {
+              handleImageClick(), setKeySign("sign");
+            }}
+            className="bg-btn text-txt px-5 py-2 rounded-md hover:bg-btn-hover transition-all duration-300 text-xl sm:text-base"
+          >
+            <i className="fa-solid fa-signature"></i>
           </button>
 
           <input
@@ -108,7 +152,7 @@ function CreateSign() {
         </div>
       )}
 
-      {fontSignModal && !imageSignModal && (
+      {fontSignModal && (
         <CreateFontSign
           onClick={() => (
             setFontSignModal(false),
@@ -124,6 +168,7 @@ function CreateSign() {
             console.log("close clicked image sign modal")
           )}
           imgUrl={signUrl}
+          keySign={keySign}
         />
       )}
     </>

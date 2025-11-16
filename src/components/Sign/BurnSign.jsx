@@ -180,16 +180,16 @@ function SignItem({ sign, setSign, isDownloading }) {
     >
       <div
         className={`relative flex flex-cols items-center justify-center w-full h-full ${
-          isDownloading && "border-2 border-dashed border-bg-yellow"
+          isDownloading && "border-2 border-dashed border-blue-500"
         } bg-transparent select-none`}
       >
         {isDownloading && (
           <div className="absolute flex gap-1 text-xl -top-7 -right-2">
             <button onClick={() => handleDuplicate(sign.id)}>
-              <i className="fa-solid fa-copy text-bg-yellow"></i>
+              <i className="fa-solid fa-copy text-blue-500"></i>
             </button>
             <button onClick={() => handleSignDelete(sign.id)}>
-              <i className="fa-solid fa-trash text-bg-yellow"></i>
+              <i className="fa-solid fa-trash text-blue-500"></i>
             </button>
           </div>
         )}
